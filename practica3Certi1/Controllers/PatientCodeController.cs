@@ -27,9 +27,11 @@ namespace UPB.practicaCerti1.Controllers
             return patientCodeManager.GetById(ci);
         }
         [HttpPost]
-        public void Post(PatientCode patientCode) 
+        
+        public string Post([FromBody]PatientCode patientCode) 
         {
-            patientCodeManager.CreateCode(patientCode.Name, patientCode.LastName, patientCode.CI); 
+
+            return patientCodeManager.CreateCode(patientCode.Name, patientCode.LastName, patientCode.CI);
         }
         [HttpPut]
         [Route("{ci}")]

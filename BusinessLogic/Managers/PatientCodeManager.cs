@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UPB.BusinessLogic.Models;
+using UPB.BusinessLogic.Managers.Exceptions;
+
 
 namespace UPB.BusinessLogic.Managers
 {
@@ -21,24 +23,40 @@ namespace UPB.BusinessLogic.Managers
         }
         public string GetById(int id) 
         {
-            PatientCode cod =codigos.Find(x => x.CI == id);
+            PatientCode? cod =codigos.Find(x => x.CI == id);
+            if(cod == null) 
+            {
+                throw new PatientNotFoundException();
+            }
+
             return GenerarCodigo(cod);
         }
-        public void CreateCode(string nombre,string apellido,int ci) 
+        public string CreateCode(string nombre,string apellido,int ci) 
         {
             PatientCode code = new PatientCode(nombre,apellido,ci);
             codigos.Add(code);
-            
+            Console.WriteLine("Estoy en la funcion de crear de la practica 3");
+            return GenerarCodigo(code);
         }
         public void UpdateCode(string nombre,string apellido,int ci) 
         {
-            PatientCode codigo = codigos.Find(x => x.CI == ci);
+            PatientCode? codigo = codigos.Find(x => x.CI == ci);
+            if (codigo == null)
+            {
+                throw new PatientNotFoundException();
+            }
+
             codigo.Name = nombre;
             codigo.LastName = apellido;
         }
         public void DeleteCode(int ci) 
         {
-            PatientCode codigo = codigos.Find(x => x.CI == ci);
+            PatientCode? codigo = codigos.Find(x => x.CI == ci);
+            if (codigo == null)
+            {
+                throw new PatientNotFoundException();
+            }
+
             codigos.Remove(codigo);
         }
 
